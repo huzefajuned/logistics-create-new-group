@@ -5,7 +5,7 @@ import CreateGroup from "@/app/component/CreateGroup";
 import CreateGroupHeader from "@/app/component/CreateGroupHeader";
 import SideMenuIcon from "@/app/component/SideMenuIcon";
 import SideMenuItem from "@/app/component/SideMenuItem";
-import CustomModal from "@/app/component/CustomModal";
+import ModalBox from "@/app/component/ModalBox";
 
 interface EmployeesProps {
   id: string;
@@ -77,7 +77,7 @@ const Employees: EmployeesProps[] = [
 const Dashboard = () => {
   const [mounted, setMounted] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [addAllEmployee, setAddAllEmployee] = useState<boolean>(false);
+  const [isAll, setIsAll] = useState<boolean>(false);
   const [groupName, setGroupName] = useState<string>("");
   const [selectedEmployee, setSelectedEmployee] = useState<EmployeesProps[]>(
     []
@@ -97,18 +97,18 @@ const Dashboard = () => {
   };
 
   // Add All Employees in a Single Click
-  const addAllEmployees = () => {
-    setSelectedEmployee(Employees);
+  const selectAllEmployee = () => {
+    setSelectedEmployee([...Employees]);
     handleOk();
-    setAddAllEmployee(true);
-  };
-  // 
-
-  const handleChange = ({ fileList: newFileList }: any) => {
-    setGroupProfile(newFileList);
+    setIsAll(true);
   };
   //
-  const formRef = useRef<any>(null); //trigger  onSumbitCreateGroup 
+
+  const handleChange = ({ fileList }: { fileList: any }) => {
+    setGroupProfile(fileList);
+  };
+  //
+  const formRef = useRef<any>(null); //trigger  onSumbitCreateGroup
   const onSumbitCreateGroup = (val: any) => {
     formRef.current.submit();
   };
@@ -124,12 +124,11 @@ const Dashboard = () => {
     console.log(groupData);
   };
 
-  
   const selectedEmploy = (selectedValues: string[]) => {
-    if (addAllEmployee) {
-      // setSelectedEmployee(Employees);
+    if (isAll) {
+      setSelectedEmployee([...Employees]);
     } else {
-      const selectedEmployeesData = Employees.filter((employee) =>
+      const selectedEmployeesData = Employees?.filter((employee) =>
         selectedValues?.includes(employee.value)
       );
 
@@ -144,7 +143,6 @@ const Dashboard = () => {
       });
     }
   };
-
   //   remove an employee
   const removeEmployee = (id: string) => {
     setSelectedEmployee((prevSelectedEmployees) =>
@@ -194,14 +192,13 @@ const Dashboard = () => {
               fileList={groupProfile}
               formRef={formRef}
               setSelectedEmployee={setSelectedEmployee}
-              // onFinish={onFinish}
             />
-            <CustomModal
+            <ModalBox
               isModalOpen={isModalOpen}
               showModal={showModal}
               handleOk={handleOk}
               handleCancel={handleCancel}
-              addAllEmployees={addAllEmployees}
+              selectAllEmployee={selectAllEmployee}
             />
           </div>
         </div>

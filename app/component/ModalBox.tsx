@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import { Button, Modal, Typography } from "antd";
 import selctionPng from "../../public/selection.png";
@@ -6,8 +6,7 @@ import Image from "next/image";
 const { Title } = Typography;
 
 const CustomModal: React.FC<any> = (props) => {
-  const { isModalOpen, showModal, handleOk, handleCancel, addAllEmployees } =
-    props;
+  const { isModalOpen, handleOk, handleCancel, selectAllEmployee } = props;
   return (
     <Modal
       width={390}
@@ -27,7 +26,7 @@ const CustomModal: React.FC<any> = (props) => {
         <p className="text-sm text-secondary font-normal">
           Please confirm that you want to add all the employee in the group?
         </p>
-        <div className="flex fle-row justify-between items-center w-full  mt-5  ">
+        <div className="flex fle-row justify-between items-center w-full  mt-5">
           <Button
             onClick={handleCancel}
             ghost
@@ -37,11 +36,10 @@ const CustomModal: React.FC<any> = (props) => {
             Cancel
           </Button>
           <Button
-            onClick={addAllEmployees}
+            onClick={selectAllEmployee}
             type="default"
             className="bg-gradient-to-r from-[#3374EA] to-[#8332F5]  text-white h-12 tracking-wide"
           >
-            {" "}
             Add All Employee
           </Button>
         </div>

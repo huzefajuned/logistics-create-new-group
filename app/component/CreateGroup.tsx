@@ -11,7 +11,7 @@ import {
   Form,
 } from "antd";
 import Image from "next/image";
-const { Title, Text } = Typography;
+const { Text } = Typography;
 import {
   UploadOutlined,
   PictureOutlined,
@@ -53,6 +53,10 @@ const CreateGroup: React.FC<any> = (props) => {
     setMounted(true);
   }, []);
 
+  const beforeUpload: any["beforeUpload"] = (file: any) => {
+    return false;
+  };
+
   if (!mounted) {
     return null;
   }
@@ -86,7 +90,11 @@ const CreateGroup: React.FC<any> = (props) => {
             <Form.Item
               name="Add Employee"
               label={false}
-              rules={[{ required: true }]}
+              rules={
+                selectedEmployee?.length <= 1
+                  ? [{ required: true }]
+                  : [{ required: false }]
+              }
               className="w-[348px] justify-center items-center"
             >
               <TreeSelect
@@ -94,15 +102,14 @@ const CreateGroup: React.FC<any> = (props) => {
                 showArrow
                 placeholder="Add Employee"
                 size="large"
+                value={selectedEmployee}
                 allowClear
-                // onChange={selectedEmploy}
                 treeData={Employees}
-                // multiple={true}
-                onChange={(val) => selectedEmploy(val)}
+                onChange={selectedEmploy}
               />
             </Form.Item>
           </div>
-          <div className="mt-2 pt-1 flex flex-row justify-start items-start text-start">
+          <div className="mt-0 pt-0 flex flex-row justify-start items-start text-start">
             <TeamOutlined className="text-primary-80" />
             <Text
               className="text-primary-80 cursor-pointer ml-2"
@@ -113,7 +120,10 @@ const CreateGroup: React.FC<any> = (props) => {
           </div>
           <div className="flex flex-row overflow-scroll  no-scrollbar w-[348px] mt-5">
             {selectedEmployee?.map((employee: any) => (
-              <div className="relative flex flex-col justify-center items-center mr-5 mb-2">
+              <div
+                key={employee?.id}
+                className="relative flex flex-col justify-center items-center mr-5 mb-2"
+              >
                 <Avatar src={employee?.avatar} size={40} />
                 <CloseCircleFilled
                   onClick={() => removeEmployee(employee?.id)}
@@ -136,6 +146,8 @@ const CreateGroup: React.FC<any> = (props) => {
               className=" flex flex-col w-[201px] h-[129px] justify-center items-center bg-secondary-60"
             >
               <Upload
+                // action="false"
+                beforeUpload={beforeUpload}
                 fileList={fileList}
                 maxCount={1}
                 showUploadList={false}
@@ -148,10 +160,10 @@ const CreateGroup: React.FC<any> = (props) => {
                       src={URL.createObjectURL(fileList[0]?.originFileObj)}
                       alt={fileList[0]?.name}
                       width={201}
-                      height={129}
-                      className="h-[130px]  object-cover"
+                      height={134}
+                      className="h-[134px]  object-cover m-auto"
                     />
-                    <EditOutlined className="text-center h-8 w-8 p-2 text-lg bg-primary-80 text-white absolute bottom-2 right-3 rounded-full" />
+                    <EditOutlined className="text-center h-8 w-8 p-2 text-lg bg-primary-80 text-white absolute bottom-3 right-2 rounded-full" />
                   </>
                 ) : (
                   <>

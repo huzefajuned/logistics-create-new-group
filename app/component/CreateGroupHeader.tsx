@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Typography, Button } from "antd";
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const CreateGroupHeader = (props: { onSumbitCreateGroup: any }) => {
   const { onSumbitCreateGroup } = props;
@@ -18,20 +18,16 @@ const CreateGroupHeader = (props: { onSumbitCreateGroup: any }) => {
   return (
     <div className="flex flex-row justify-between h-[60px] ">
       <div className=" w-6/12 m-auto  flex flex-col">
-        {/* <div className=" flex flex-row "> */}
         <Title
           level={4}
           className="tracking-wider font-semibold  text-secondary"
         >
           Create New Group
         </Title>
-        {/* </div> */}
 
-        {/* <div className="text "> */}
         <p className="text-secondary-40  text-xs tracking-tight  text-start ">
           To create a new group, please fill the fields given below.
         </p>
-        {/* </div> */}
       </div>
       <div className="w-6/12 h-full    flex flex-row  items-center justify-end ">
         <Button
