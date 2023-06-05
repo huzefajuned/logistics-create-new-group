@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react";
 import { Button, Modal, Typography } from "antd";
 import selctionPng from "../../public/selection.png";

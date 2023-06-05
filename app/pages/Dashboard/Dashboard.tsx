@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ConfigProvider } from "antd";
 import CreateGroup from "@/app/component/CreateGroup";
 import CreateGroupHeader from "@/app/component/CreateGroupHeader";
@@ -98,35 +98,39 @@ const Dashboard = () => {
 
   // Add All Employees in a Single Click
   const addAllEmployees = () => {
+    setSelectedEmployee(Employees);
     handleOk();
     setAddAllEmployee(true);
-    setSelectedEmployee(Employees);
   };
-  //
+  // 
+
   const handleChange = ({ fileList: newFileList }: any) => {
     setGroupProfile(newFileList);
   };
-
+  //
+  const formRef = useRef<any>(null); //trigger  onSumbitCreateGroup 
+  const onSumbitCreateGroup = (val: any) => {
+    formRef.current.submit();
+  };
+  // creating a group---
   const handleCreateGroup = () => {
-    // Gather input values
-
     // Create object with collected data
     const groupData = {
       groupName,
       selectedEmployee,
       groupProfile,
     };
-
     // Output the object to console
     console.log(groupData);
   };
 
+  
   const selectedEmploy = (selectedValues: string[]) => {
     if (addAllEmployee) {
-      setSelectedEmployee(Employees);
+      // setSelectedEmployee(Employees);
     } else {
       const selectedEmployeesData = Employees.filter((employee) =>
-        selectedValues.includes(employee.value)
+        selectedValues?.includes(employee.value)
       );
 
       setSelectedEmployee((prevSelectedEmployees) => {
@@ -174,7 +178,7 @@ const Dashboard = () => {
         </div>
         <div className="w-full m-1  ">
           <div className="w-[815px] h-[560px] p-8 border-[1px] border-[#D4D4D4] rounded-lg ml-[40px] mt-[52px] ">
-            <CreateGroupHeader />
+            <CreateGroupHeader onSumbitCreateGroup={onSumbitCreateGroup} />
             <CreateGroup
               isModalOpen={isModalOpen}
               showModal={showModal}
@@ -188,6 +192,9 @@ const Dashboard = () => {
               handleCreateGroup={handleCreateGroup}
               handleChange={handleChange}
               fileList={groupProfile}
+              formRef={formRef}
+              setSelectedEmployee={setSelectedEmployee}
+              // onFinish={onFinish}
             />
             <CustomModal
               isModalOpen={isModalOpen}

@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import {
   Input,
@@ -7,8 +8,9 @@ import {
   TreeSelect,
   Avatar,
   Button,
+  Form,
 } from "antd";
-
+import Image from "next/image";
 const { Title, Text } = Typography;
 import {
   UploadOutlined,
@@ -33,8 +35,19 @@ const CreateGroup: React.FC<any> = (props) => {
     handleCreateGroup,
     handleChange,
     fileList,
+    formRef,
+    // onFinish,
   } = props;
 
+  //   Validation message
+  const validateMessages = {
+    required: "${label} is required!",
+  };
+
+  const onFinish = () => {
+    handleCreateGroup();
+    // console.log(values);
+  };
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
     setMounted(true);
@@ -44,43 +57,62 @@ const CreateGroup: React.FC<any> = (props) => {
     return null;
   }
   return (
-    <>             
-      <div className="flex flex-row w-full h-full">
-        <div className="w-6/12">
+    <>
+      <Form
+        ref={formRef}
+        layout="vertical"
+        onFinish={onFinish}
+        validateMessages={validateMessages}
+        className="flex flex-row w-full h-auto"
+      >
+        <div className=" flex flex-col w-6/12">
           <div className="mt-5">
             <h2 className="text-secondary mb-1">Group Name</h2>
-            <Input
-              size="large"
-              placeholder="Group Name"
-              className="border  border-[#ABABAB] rounded w-[348px] h-[43px]"
-              onChange={(e) => setGroupName(e.target.value)}
-            />
+            <Form.Item
+              name="Group Name"
+              label={false}
+              rules={[{ required: true }]}
+            >
+              <Input
+                size="large"
+                placeholder="Group Name"
+                className="border  border-secondary-40 rounded w-[348px] h-[43px]"
+                onChange={(e) => setGroupName(e.target.value)}
+              />
+            </Form.Item>
           </div>
-          <div className="mt-3">
+          <div className="mt-0 ">
             <h2 className="text-secondary mb-1">Add Employee</h2>
-            <TreeSelect
-              showSearch
-              showArrow
+            <Form.Item
+              name="Add Employee"
+              label={false}
+              rules={[{ required: true }]}
               className="w-[348px] justify-center items-center"
-              placeholder="Add Employee"
-              size="large"
-              allowClear
-              onChange={selectedEmploy}
-              treeData={Employees}
-            />
+            >
+              <TreeSelect
+                showSearch
+                showArrow
+                placeholder="Add Employee"
+                size="large"
+                allowClear
+                // onChange={selectedEmploy}
+                treeData={Employees}
+                // multiple={true}
+                onChange={(val) => selectedEmploy(val)}
+              />
+            </Form.Item>
           </div>
           <div className="mt-2 pt-1 flex flex-row justify-start items-start text-start">
             <TeamOutlined className="text-primary-80" />
             <Text
               className="text-primary-80 cursor-pointer ml-2"
-              //   onClick={addAllEmployees}
               onClick={showModal}
             >
               Add all Employees
             </Text>
           </div>
           <div className="flex flex-row overflow-scroll  no-scrollbar w-[348px] mt-5">
-            {selectedEmployee.map((employee: any) => (
+            {selectedEmployee?.map((employee: any) => (
               <div className="relative flex flex-col justify-center items-center mr-5 mb-2">
                 <Avatar src={employee?.avatar} size={40} />
                 <CloseCircleFilled
@@ -95,38 +127,43 @@ const CreateGroup: React.FC<any> = (props) => {
           </div>
         </div>
         <div className="w-6/12">
-          <div className="mt-5">
+          <div className="mt-6">
             <h2 className="text-secondary mb-1">Group Profile </h2>
-
-            <div className="bg-[#F6F6F6] w-[201px] h-[129px] block absolute">
+            <Form.Item
+              name="Group Profile"
+              label={false}
+              rules={[{ required: true }]}
+              className=" flex flex-col w-[201px] h-[129px] justify-center items-center bg-secondary-60"
+            >
               <Upload
+                fileList={fileList}
                 maxCount={1}
                 showUploadList={false}
                 onChange={handleChange}
-                className=" flex flex-col justify-center items-center  w-full h-full overflow-hidden"
+                className="block max-w-[201px]"
               >
                 {fileList.length >= 1 ? (
                   <>
-                    <img
-                      src={URL.createObjectURL(fileList[0].originFileObj)}
-                      alt={fileList[0].name}
-                      className="w-[201px] h-[100%]  object-cover"
+                    <Image
+                      src={URL.createObjectURL(fileList[0]?.originFileObj)}
+                      alt={fileList[0]?.name}
+                      width={201}
+                      height={129}
+                      className="h-[130px]  object-cover"
                     />
-
                     <EditOutlined className="text-center h-8 w-8 p-2 text-lg bg-primary-80 text-white absolute bottom-2 right-3 rounded-full" />
                   </>
                 ) : (
                   <>
-                    <PictureOutlined className="text-gray-400 text-5xl relative top-0 left-5" />
-                    <UploadOutlined className="text-center h-8 w-8 p-2 text-lg bg-primary-80 text-white relative top-8 left-12 rounded-full" />
+                    <PictureOutlined className="text-secondary-40 ml-10  p-10  w-[163px] text-5xl" />
+                    <UploadOutlined className="text-center h-8 w-8 p-2 absolute bottom-2 right-2 text-lg bg-primary-80 text-white rounded-full" />
                   </>
                 )}
               </Upload>
-            </div>
+            </Form.Item>
           </div>
         </div>
-      </div>
-      {/* <Button onClick={handleCreateGroup}>Create Group</Button> */}
+      </Form>
     </>
   );
 };
