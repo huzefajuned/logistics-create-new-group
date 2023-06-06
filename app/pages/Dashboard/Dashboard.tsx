@@ -2,11 +2,27 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ConfigProvider } from "antd";
 import CreateGroup from "@/app/component/CreateGroup";
-import CreateGroupHeader from "@/app/component/CreateGroupHeader";
-import SideMenuIcon from "@/app/component/SideMenuIcon";
-import SideMenuItem from "@/app/component/SideMenuItem";
+// import CreateGroupHeader from "@/app/component/CreateGroupHeader";
 import ModalBox from "@/app/component/ModalBox";
 
+const handleClick = () => {
+  alert("handleClick");
+};
+const primaryButtonProps = {
+  type: "primary",
+  isGhost: true,
+  label: "Cancel",
+  onClick: handleClick,
+  className: "className",
+};
+const secondaryButtonProps = {
+  type: "default",
+  isGhost: false,
+  label: "Add Participants",
+  onClick: handleClick,
+  className: "className",
+  htmlType: "submit",
+};
 interface EmployeesProps {
   id: string;
   avatar: string;
@@ -159,51 +175,46 @@ const Dashboard = () => {
   }
 
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          fontFamily: "var(--font-sogoe)",
-        },
-      }}
-    >
-      <div className="bg-white-100 w-full h-screen flex flex-row  justify-center ">
-        <div className="bg-gray-100 text-center w-14 m-1">
-          <SideMenuIcon />
-        </div>
-        <div className=" bg-gray-100 w-72  m-1">
-          {" "}
-          <SideMenuItem />
-        </div>
-        <div className="w-full m-1  ">
-          <div className="w-[815px] h-[560px] p-8 border-[1px] border-[#D4D4D4] rounded-lg ml-[40px] mt-[52px] ">
-            <CreateGroupHeader onSumbitCreateGroup={onSumbitCreateGroup} />
-            <CreateGroup
-              isModalOpen={isModalOpen}
-              showModal={showModal}
-              handleOk={handleOk}
-              handleCancel={handleCancel}
-              selectedEmploy={selectedEmploy}
-              Employees={Employees}
-              setGroupName={setGroupName}
-              selectedEmployee={selectedEmployee}
-              removeEmployee={removeEmployee}
-              handleCreateGroup={handleCreateGroup}
-              handleChange={handleChange}
-              fileList={groupProfile}
-              formRef={formRef}
-              setSelectedEmployee={setSelectedEmployee}
-            />
-            <ModalBox
-              isModalOpen={isModalOpen}
-              showModal={showModal}
-              handleOk={handleOk}
-              handleCancel={handleCancel}
-              selectAllEmployee={selectAllEmployee}
-            />
-          </div>
+    <div className="bg-white-100 w-full h-screen flex flex-row  justify-center ">
+      <div className="bg-gray-100 text-center items-center justify-center w-14 m-1">
+        <p>Icon</p>
+      </div>
+      <div className="bg-gray-100 items-center justify-center text-center w-72  m-1">
+        <p> MenuItem</p>
+      </div>
+      <div className="w-full m-1  ">
+        <div className="w-[815px] h-[560px] p-8 border-[1px] border-[#D4D4D4] rounded-lg ml-[40px] mt-[52px] ">
+          {/* <CreateGroupHeader onSumbitCreateGroup={onSumbitCreateGroup} /> */}
+          <CreateGroup
+            heading="Create New Group"
+            subheading="To create a new group, please fill the fields given below."
+            primaryButtonProps={primaryButtonProps}
+            secondaryButtonProps={secondaryButtonProps}
+            // isModalOpen={isModalOpen}
+            // showModal={showModal}
+            // handleOk={handleOk}
+            // handleCancel={handleCancel}
+            // selectedEmploy={selectedEmploy}
+            // Employees={Employees}
+            // setGroupName={setGroupName}
+            // selectedEmployee={selectedEmployee}
+            // removeEmployee={removeEmployee}
+            // handleCreateGroup={handleCreateGroup}
+            // handleChange={handleChange}
+            // fileList={groupProfile}
+            // formRef={formRef}
+            // setSelectedEmployee={setSelectedEmployee}
+          />
+          <ModalBox
+            isModalOpen={isModalOpen}
+            showModal={showModal}
+            handleOk={handleOk}
+            handleCancel={handleCancel}
+            selectAllEmployee={selectAllEmployee}
+          />
         </div>
       </div>
-    </ConfigProvider>
+    </div>
   );
 };
 

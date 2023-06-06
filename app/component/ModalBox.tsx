@@ -1,25 +1,25 @@
 "use client";
 import React, { useState } from "react";
 import { Button, Modal, Typography } from "antd";
-import selctionPng from "../../public/selection.png";
+import selectionPng from "../../public/images/selection.png";
 import Image from "next/image";
 const { Title } = Typography;
 
-const CustomModal: React.FC<any> = (props) => {
+const ModalBox: React.FC<any> = (props) => {
   const { isModalOpen, handleOk, handleCancel, selectAllEmployee } = props;
   return (
     <Modal
-      width={390}
       closable={false}
       open={isModalOpen}
       onOk={handleOk}
       onCancel={handleCancel}
       okButtonProps={{ hidden: true }}
       cancelButtonProps={{ hidden: true }}
-      className="bg-transparent"
+      width={390}
+      // style={{ backgroundColor: "blue", width: 390, height: 285 }}
     >
-      <div className=" flex flex-col justify-center text-center items-center m-auto w-[268px]">
-        <Image height={43} width={43} src={selctionPng} alt="selctionPng" />
+      <div className=" flex flex-col justify-center text-center items-center m-auto  w-[390px] h-[285px]  bg-green-300 ">
+        <Image height={43} width={43} src={selectionPng} alt="selctionPng" />
         <Title level={4} className="font-semibold text-secondary mt-3">
           Are you sure?
         </Title>
@@ -48,4 +48,4 @@ const CustomModal: React.FC<any> = (props) => {
   );
 };
 
-export default CustomModal;
+export default ModalBox;
