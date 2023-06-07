@@ -17,7 +17,7 @@
 
 .ant-modal-content {
   @apply !max-w-full;
-  @apply !p-0
+  @apply !p-0;
 }
 /* add this code for hiding overflow-scroll scrollbar */
 

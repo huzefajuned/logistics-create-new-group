@@ -1,5 +1,5 @@
 import React from "react";
-import { Button as Btn } from "antd";
+import { Button } from "antd";
 
 interface ButtonProps {
   type: any;
@@ -9,7 +9,7 @@ interface ButtonProps {
   className?: string;
   htmlType?: any;
 }
-const Button: React.FC<ButtonProps> = ({
+const CustomButton: React.FC<ButtonProps> = ({
   type,
   label,
   isGhost,
@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <>
-      <Btn
+      <Button
         type={type}
         ghost={isGhost}
         onClick={onClick}
@@ -27,9 +27,9 @@ const Button: React.FC<ButtonProps> = ({
         htmlType={htmlType}
       >
         {label}
-      </Btn>
+      </Button>
     </>
   );
 };
 
-export default Button;
+export default CustomButton;
