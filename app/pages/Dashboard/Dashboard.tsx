@@ -22,13 +22,28 @@ const secondaryButtonProps = {
   htmlType: "submit",
 };
 
+
+interface selectedEmployeesAndDriversProps{
+  avatar:string,
+  value:string,
+  label:string
+}
+
+// for {selectedEmployees,selectedDrivers }
+interface dataProps {
+  id: string;
+  avatar: string;
+  label: string;
+  value: string;
+}
+
 const Dashboard = () => {
   const [mounted, setMounted] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isAll, setIsAll] = useState<boolean>(false);
 
-  const [selectedEmployees, setSelectedEmployees] = useState<any[]>([]);
-  const [selectedDrivers, setSelectedDrivers] = useState<any[]>([]);
+  const [selectedEmployees, setSelectedEmployees] = useState<selectedEmployeesAndDriversProps[]>([]);
+  const [selectedDrivers, setSelectedDrivers] = useState<selectedEmployeesAndDriversProps[]>([]);
 
   const showModal = () => {
     setIsModalOpen(true); // Set isModalOpen to true when the modal needs to be shown

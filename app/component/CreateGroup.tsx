@@ -8,10 +8,19 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 
-import { Input, Typography, Upload, Avatar, Form, Select } from "antd";
+import {
+  Input,
+  Typography,
+  Upload,
+  Avatar,
+  Form,
+  Select,
+  UploadFile,
+} from "antd";
 import Image from "next/image";
 const { Text } = Typography;
 import CustomButton from "./CustomButton"; // customButton
+import CustomPreview from "./CustomPreview";
 interface ButtonProps {
   type: any;
   label: string;
@@ -148,6 +157,7 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
   setSelectedDrivers,
   setSelectedEmployees,
 }) => {
+  // console.log("selectedEmployees", selectedEmployees);
   const [groupProfile, setGroupProfile] = useState<any[]>([]);
   const [fileList, setFileList] = useState<any[]>([]);
   const [mounted, setMounted] = useState<boolean>(false);
@@ -158,24 +168,31 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
   };
 
   // Final Group Created
-  const onFinish = (values: any) => {
+  const onFinish = (values: dataProps[]) => {
     console.log("createdGroup - ", values);
   };
 
-  const onChangeListenerForEmployee = (values: any, remain_values: any) => {
+  const onChangeListenerForEmployee = (
+    values: string,
+    remain_values: dataProps[]
+  ) => {
     setSelectedEmployees([...remain_values]);
   };
 
-  const onChangeListenerForDriver = (values: any, remain_values: any) => {
+  const onChangeListenerForDriver = (
+    values: string,
+    remain_values: dataProps[]
+  ) => {
+    // console.log("remain_values", remain_values);
     setSelectedDrivers([...remain_values]);
   };
-// custome handler--
+  // custome handler--
   const handlers: any = {
     selectEmployee: onChangeListenerForEmployee,
     selectDriver: onChangeListenerForDriver,
   };
 
-  const handleChange = ({ fileList }: { fileList: any }) => {
+  const handleChange = ({ fileList }: { fileList: UploadFile[] }) => {
     setGroupProfile(fileList);
   };
   // useEffect only runs on the client, so now we can safely show the UI
@@ -183,7 +200,7 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
     setMounted(true);
   }, []);
 
-  const beforeUpload: any["beforeUpload"] = (file: any) => {
+  const beforeUpload = () => {
     return false;
   };
 
@@ -230,7 +247,7 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
                       <Form.Item
                         label={option.label}
                         name={option.label}
-                        id={option.id}
+                        key={option.id}
                         className=""
                         rules={[{ required: true }]}
                       >
@@ -246,6 +263,7 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
                         <Form.Item
                           label={option.label}
                           name={option.id}
+                          key={option.id}
                           rules={[{ required: true }]}
                           className="mb-0"
                         >
@@ -266,7 +284,7 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
                             allowClear
                             size="large"
                             showSearch
-                            maxTagCount={3}
+                            maxTagCount={2}
                             onChange={handlers[option.id]}
                           ></Select>
                         </Form.Item>
@@ -285,57 +303,23 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
               })}
             </div>
 
-            {/*  selectedEmployee Preview----*/}
+            {/* selectedEmployee Preview---- */}
             {selectedEmployees?.length > 0 && (
               <>
+                {/* <div className=""> */}
                 <p>selectedEmployees</p>
-
-                <div className="flex flex-row overflow-scroll  no-scrollbar w-[348px] mt-5">
-                  {selectedEmployees?.map((employee: any) => {
-                    return (
-                      <div
-                        key={employee?.value}
-                        className="relative flex flex-col justify-center items-center mr-5 mb-2"
-                      >
-                        <Avatar src={employee?.avatar} size={40} />
-                        <CloseCircleFilled
-                          // onClick={() => removeEmployee(employee?.id)}
-                          className="absolute top-6 right-1 -mt-2 -mr-2   cursor-pointer text-xl  text-secondary-70 bg-white rounded-full"
-                        />
-                        <Text className="text-secondary  truncate">
-                          {employee?.label}
-                        </Text>
-                      </div>
-                    );
-                  })}
-                </div>
+                <CustomPreview data={selectedEmployees} />
+                {/* </div> */}
               </>
             )}
 
             {/*  selectedDrivers Preview----*/}
             {selectedDrivers?.length > 0 && (
               <>
+                {/* <div className=""> */}
                 <p>selectedDrivers</p>
-
-                <div className="flex flex-row overflow-scroll  no-scrollbar w-[348px] mt-5">
-                  {selectedDrivers?.map((employee: any) => {
-                    return (
-                      <div
-                        key={employee?.value}
-                        className="relative flex flex-col justify-center items-center mr-5 mb-2"
-                      >
-                        <Avatar src={employee?.avatar} size={40} />
-                        <CloseCircleFilled
-                          // onClick={() => removeEmployee(employee?.id)}
-                          className="absolute top-6 right-1 -mt-2 -mr-2   cursor-pointer text-xl  text-secondary-70 bg-white rounded-full"
-                        />
-                        <Text className="text-secondary  truncate">
-                          {employee?.label}
-                        </Text>
-                      </div>
-                    );
-                  })}
-                </div>
+                <CustomPreview data={selectedDrivers} />
+                {/* </div> */}
               </>
             )}
           </div>
