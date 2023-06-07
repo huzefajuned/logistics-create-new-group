@@ -21,6 +21,7 @@ import Image from "next/image";
 const { Text } = Typography;
 import CustomButton from "./CustomButton"; // customButton
 import CustomPreview from "./CustomPreview";
+import FormHeader from "./FormHeader";
 interface ButtonProps {
   type: any;
   label: string;
@@ -36,16 +37,27 @@ interface dataProps {
   value: string;
 }
 
+interface selectedEmployeesAndDriversProps {
+  id?: string;
+  avatar: string;
+  value: string;
+  label: string;
+}
 interface CreateGroupProps {
   heading: string;
   subheading: string;
   primaryButtonProps?: ButtonProps;
   secondaryButtonProps?: ButtonProps;
-  selectedEmployees: any[];
-  selectedDrivers: any[];
+  selectedEmployees: selectedEmployeesAndDriversProps[];
+  selectedDrivers: selectedEmployeesAndDriversProps[];
   setSelectedEmployees: React.Dispatch<SetStateAction<any[]>>;
   setSelectedDrivers: React.Dispatch<SetStateAction<any[]>>;
   showModal: () => void;
+
+  selectedAllEmployees: any[];
+  setSelectedAllEmployees: React.Dispatch<SetStateAction<any[]>>;
+  selectedAllDrivers: any[];
+  setSelectedAllDrivers: React.Dispatch<SetStateAction<any[]>>;
 }
 interface formOptionsProps {
   type: string;
@@ -55,14 +67,15 @@ interface formOptionsProps {
   options?: dataProps[];
   addAll?: string;
 }
+
 //dummy-data
 const data: dataProps[] = [
   {
     id: "1",
     avatar:
       "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250",
-    label: "Rahul-label",
-    value: "1",
+    label: "Rahul",
+    value: "Rahul",
   },
   {
     id: "2",
@@ -156,12 +169,22 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
   selectedEmployees,
   setSelectedDrivers,
   setSelectedEmployees,
+  selectedAllDrivers,
+  selectedAllEmployees,
 }) => {
   // console.log("selectedEmployees", selectedEmployees);
   const [groupProfile, setGroupProfile] = useState<any[]>([]);
   const [fileList, setFileList] = useState<any[]>([]);
   const [mounted, setMounted] = useState<boolean>(false);
 
+  const handleAddAll = ({ allSelectedValues, uniqueId }: any) => {
+    showModal();
+    if (uniqueId === "selectEmployee") {
+      setSelectedEmployees([...allSelectedValues]);
+    } else if (uniqueId === "selectDriver") {
+      setSelectedDrivers([...allSelectedValues]);
+    }
+  };
   //  Form Validation message
   const validateMessages = {
     required: "${label} is required!",
@@ -207,6 +230,7 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
   if (!mounted) {
     return null;
   }
+
   return (
     <>
       <Form
@@ -215,16 +239,8 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
         validateMessages={validateMessages}
         className="flex flex-col w-full h-auto"
       >
-        {/* Form Heading--- */}
         <div className="flex justify-between mb-4 items-center w-full">
-          <div>
-            {heading && <h2 className="text-l font-bold">{heading}</h2>}
-            {subheading && (
-              <p className="text-xs tracking-normal text-secondary-70">
-                {subheading}
-              </p>
-            )}
-          </div>
+          <FormHeader heading={heading} subheading={subheading} />
           <div className="flex h-10 items-center gap-4">
             {primaryButtonProps && <CustomButton {...primaryButtonProps} />}
             {secondaryButtonProps && (
@@ -237,9 +253,9 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
           </div>
         </div>
 
-        <div className=" flex flx-row  w-full ">
+        <div className=" flex flx-row justify-evenly  w-full ">
           <div>
-            <div className="w-[348px]">
+            <div className="w-[348px] ">
               {formOptions.map((option) => {
                 switch (option.type) {
                   case "input":
@@ -270,6 +286,7 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
                           <Select
                             mode="multiple"
                             title={option.id}
+                            value={selectedDrivers || selectedEmployees}
                             options={option.options?.map(
                               (option_entry: dataProps) => {
                                 return {
@@ -292,7 +309,12 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
                           <TeamOutlined className="text-primary-80" />
                           <Text
                             className="text-primary-80 cursor-pointer ml-2"
-                            onClick={showModal}
+                            onClick={() =>
+                              handleAddAll({
+                                allSelectedValues: option.options,
+                                uniqueId: option.id,
+                              })
+                            }
                           >
                             {option.addAll}
                           </Text>
@@ -306,23 +328,20 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
             {/* selectedEmployee Preview---- */}
             {selectedEmployees?.length > 0 && (
               <>
-                {/* <div className=""> */}
-                <p>selectedEmployees</p>
+                <p className="text-secondary-70">Selected Employees</p>
                 <CustomPreview data={selectedEmployees} />
-                {/* </div> */}
               </>
             )}
 
             {/*  selectedDrivers Preview----*/}
             {selectedDrivers?.length > 0 && (
               <>
-                {/* <div className=""> */}
-                <p>selectedDrivers</p>
+                <p className="text-secondary-70">Selected Drivers</p>
                 <CustomPreview data={selectedDrivers} />
-                {/* </div> */}
               </>
             )}
           </div>
+
           {/* Upload Group Profile--- */}
           <div className="ml-4 mt-0 w-full">
             {formOptions.map((option) => {

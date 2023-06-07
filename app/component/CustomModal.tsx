@@ -5,8 +5,18 @@ import selectionPng from "../../public/images/selection.png";
 import Image from "next/image";
 const { Title } = Typography;
 
-const CustomModal: React.FC<any> = (props) => {
-  const { isModalOpen, handleOk, handleCancel, selectAllEmployee } = props;
+interface CustomModalProps {
+  isModalOpen: boolean;
+  handleOk: () => void;
+  handleCancel: () => void;
+  selectAllEmployee: () => void;
+}
+const CustomModal: React.FC<CustomModalProps> = ({
+  isModalOpen,
+  handleOk,
+  handleCancel,
+  selectAllEmployee,
+}) => {
   return (
     <Modal
       closable={false}
@@ -26,7 +36,7 @@ const CustomModal: React.FC<any> = (props) => {
           <p className="text-sm text-secondary font-normal">
             Please confirm that you want to add all the employee in the group?
           </p>
-          <div className="flex fle-row justify-between items-center w-full  mt-5">
+          <div className="flex fle-row justify-around items-center w-full  mt-5">
             <Button
               onClick={handleCancel}
               ghost

@@ -22,11 +22,11 @@ const secondaryButtonProps = {
   htmlType: "submit",
 };
 
-
-interface selectedEmployeesAndDriversProps{
-  avatar:string,
-  value:string,
-  label:string
+interface selectedEmployeesAndDriversProps {
+  avatar: string;
+  id?: string;
+  value: string;
+  label: string;
 }
 
 // for {selectedEmployees,selectedDrivers }
@@ -42,8 +42,22 @@ const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isAll, setIsAll] = useState<boolean>(false);
 
-  const [selectedEmployees, setSelectedEmployees] = useState<selectedEmployeesAndDriversProps[]>([]);
-  const [selectedDrivers, setSelectedDrivers] = useState<selectedEmployeesAndDriversProps[]>([]);
+  const [selectedEmployees, setSelectedEmployees] = useState<
+    selectedEmployeesAndDriversProps[]
+  >([]);
+  const [selectedDrivers, setSelectedDrivers] = useState<
+    selectedEmployeesAndDriversProps[]
+  >([]);
+
+  const [selectedAllEmployees, setSelectedAllEmployees] = useState<
+    selectedEmployeesAndDriversProps[]
+  >([]);
+  const [selectedAllDrivers, setSelectedAllDrivers] = useState<
+    selectedEmployeesAndDriversProps[]
+  >([]);
+
+  console.log("selectedAllEmployees", selectedAllEmployees);
+  console.log("selectedAllDrivers", selectedAllDrivers);
 
   const showModal = () => {
     setIsModalOpen(true); // Set isModalOpen to true when the modal needs to be shown
@@ -59,7 +73,7 @@ const Dashboard = () => {
 
   // Add All Employees in a Single Click
   const selectAllEmployee = () => {
-    // setSelectedEmployee([...Employees]);
+    // setSelectedEmployees([]);
     handleOk();
     setIsAll(true);
   };
@@ -82,7 +96,7 @@ const Dashboard = () => {
       <div className="bg-gray-100 items-center justify-center text-center w-72  m-1">
         <p> MenuItem</p>
       </div>
-      <div className="w-full m-1  ">
+      <div className="w-full m-1">
         <div className="w-[815px] max-h-[700px] min-h-[670] h-auto p-8 border-[1px] border-[#D4D4D4] rounded-lg ml-[40px] mt-[52px] ">
           <CreateGroup
             heading="Create New Group"
@@ -94,10 +108,14 @@ const Dashboard = () => {
             setSelectedEmployees={setSelectedEmployees}
             selectedDrivers={selectedDrivers}
             setSelectedDrivers={setSelectedDrivers}
+            selectedAllEmployees={selectedAllEmployees}
+            setSelectedAllEmployees={setSelectedAllEmployees}
+            selectedAllDrivers={selectedAllDrivers}
+            setSelectedAllDrivers={setSelectedAllDrivers}
           />
           <CustomModal
             isModalOpen={isModalOpen}
-            showModal={showModal}
+            // showModal={showModal}
             handleOk={handleOk}
             handleCancel={handleCancel}
             selectAllEmployee={selectAllEmployee}
