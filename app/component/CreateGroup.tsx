@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, SetStateAction } from "react";
+import React, { useState, useEffect } from "react";
 import {
   UploadOutlined,
   PictureOutlined,
@@ -22,51 +22,12 @@ const { Text } = Typography;
 import CustomButton from "./CustomButton"; // customButton
 import CustomPreview from "./CustomPreview";
 import FormHeader from "./FormHeader";
-interface ButtonProps {
-  type: any;
-  label: string;
-  isGhost: any;
-  onClick: () => void;
-  className?: string;
-  htmlType?: string;
-}
-interface dataProps {
-  id: string;
-  avatar: string;
-  label: string;
-  value: string;
-}
-
-interface selectedEmployeesAndDriversProps {
-  id?: string;
-  avatar: string;
-  value: string;
-  label: string;
-}
-interface CreateGroupProps {
-  heading: string;
-  subheading: string;
-  primaryButtonProps?: ButtonProps;
-  secondaryButtonProps?: ButtonProps;
-  selectedEmployees: selectedEmployeesAndDriversProps[];
-  selectedDrivers: selectedEmployeesAndDriversProps[];
-  setSelectedEmployees: React.Dispatch<SetStateAction<any[]>>;
-  setSelectedDrivers: React.Dispatch<SetStateAction<any[]>>;
-  showModal: () => void;
-
-  selectedAllEmployees: any[];
-  setSelectedAllEmployees: React.Dispatch<SetStateAction<any[]>>;
-  selectedAllDrivers: any[];
-  setSelectedAllDrivers: React.Dispatch<SetStateAction<any[]>>;
-}
-interface formOptionsProps {
-  type: string;
-  id: string;
-  label: string;
-  placeholder: string;
-  options?: dataProps[];
-  addAll?: string;
-}
+import {
+  ButtonProps,
+  CreateGroupProps,
+  formOptionsProps,
+  dataProps,
+} from "../interface/type";
 
 //dummy-data
 const data: dataProps[] = [
@@ -169,21 +130,19 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
   selectedEmployees,
   setSelectedDrivers,
   setSelectedEmployees,
-  selectedAllDrivers,
-  selectedAllEmployees,
 }) => {
-  // console.log("selectedEmployees", selectedEmployees);
   const [groupProfile, setGroupProfile] = useState<any[]>([]);
   const [fileList, setFileList] = useState<any[]>([]);
   const [mounted, setMounted] = useState<boolean>(false);
 
   const handleAddAll = ({ allSelectedValues, uniqueId }: any) => {
     showModal();
-    if (uniqueId === "selectEmployee") {
-      setSelectedEmployees([...allSelectedValues]);
-    } else if (uniqueId === "selectDriver") {
-      setSelectedDrivers([...allSelectedValues]);
-    }
+    // for  later user
+    // if (uniqueId === "selectEmployee") {
+    //   setSelectedEmployees([...allSelectedValues]);
+    // } else if (uniqueId === "selectDriver") {
+    //   setSelectedDrivers([...allSelectedValues]);
+    // }
   };
   //  Form Validation message
   const validateMessages = {
@@ -195,6 +154,7 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
     console.log("createdGroup - ", values);
   };
 
+  // adding all selctedEmployees for preview
   const onChangeListenerForEmployee = (
     values: string,
     remain_values: dataProps[]
@@ -202,11 +162,11 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
     setSelectedEmployees([...remain_values]);
   };
 
+  // adding all selectedDrivers for preview
   const onChangeListenerForDriver = (
     values: string,
     remain_values: dataProps[]
   ) => {
-    // console.log("remain_values", remain_values);
     setSelectedDrivers([...remain_values]);
   };
   // custome handler--
@@ -247,7 +207,6 @@ const CreateGroup: React.FC<CreateGroupProps> = ({
               <CustomButton
                 {...secondaryButtonProps}
                 className="bg-gradient-to-r from-primary-80 to-primary-90 text-primary-50"
-                htmlType="submit"
               />
             )}
           </div>

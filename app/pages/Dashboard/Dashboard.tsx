@@ -1,46 +1,34 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import CreateGroup from "@/app/component/CreateGroup";
 import CustomModal from "@/app/component/CustomModal";
+import {
+  ButtonProps,
+  selectedEmployeesAndDriversProps,
+} from "@/app/interface/type";
 
 const handleClick = () => {
   alert("Please Check Console");
 };
-const primaryButtonProps = {
+const primaryButtonProps: ButtonProps = {
   type: "primary",
   isGhost: true,
   label: "Cancel",
   onClick: handleClick,
   className: "className",
 };
-const secondaryButtonProps = {
+const secondaryButtonProps: ButtonProps = {
   type: "default",
   isGhost: false,
   label: "Add Participants",
   onClick: handleClick,
   className: "className",
-  htmlType: "submit",
+  buttonType: "submit",
 };
-
-interface selectedEmployeesAndDriversProps {
-  avatar: string;
-  id?: string;
-  value: string;
-  label: string;
-}
-
-// for {selectedEmployees,selectedDrivers }
-interface dataProps {
-  id: string;
-  avatar: string;
-  label: string;
-  value: string;
-}
 
 const Dashboard = () => {
   const [mounted, setMounted] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isAll, setIsAll] = useState<boolean>(false);
 
   const [selectedEmployees, setSelectedEmployees] = useState<
     selectedEmployeesAndDriversProps[]
@@ -48,16 +36,6 @@ const Dashboard = () => {
   const [selectedDrivers, setSelectedDrivers] = useState<
     selectedEmployeesAndDriversProps[]
   >([]);
-
-  const [selectedAllEmployees, setSelectedAllEmployees] = useState<
-    selectedEmployeesAndDriversProps[]
-  >([]);
-  const [selectedAllDrivers, setSelectedAllDrivers] = useState<
-    selectedEmployeesAndDriversProps[]
-  >([]);
-
-  console.log("selectedAllEmployees", selectedAllEmployees);
-  console.log("selectedAllDrivers", selectedAllDrivers);
 
   const showModal = () => {
     setIsModalOpen(true); // Set isModalOpen to true when the modal needs to be shown
@@ -73,11 +51,8 @@ const Dashboard = () => {
 
   // Add All Employees in a Single Click
   const selectAllEmployee = () => {
-    // setSelectedEmployees([]);
-    handleOk();
-    setIsAll(true);
+    handleOk(); // close modalBox-
   };
-  //
 
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
@@ -108,14 +83,9 @@ const Dashboard = () => {
             setSelectedEmployees={setSelectedEmployees}
             selectedDrivers={selectedDrivers}
             setSelectedDrivers={setSelectedDrivers}
-            selectedAllEmployees={selectedAllEmployees}
-            setSelectedAllEmployees={setSelectedAllEmployees}
-            selectedAllDrivers={selectedAllDrivers}
-            setSelectedAllDrivers={setSelectedAllDrivers}
           />
           <CustomModal
             isModalOpen={isModalOpen}
-            // showModal={showModal}
             handleOk={handleOk}
             handleCancel={handleCancel}
             selectAllEmployee={selectAllEmployee}

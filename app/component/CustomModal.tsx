@@ -1,16 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Button, Modal, Typography } from "antd";
 import selectionPng from "../../public/images/selection.png";
 import Image from "next/image";
 const { Title } = Typography;
+import { CustomModalProps } from "../interface/type";
 
-interface CustomModalProps {
-  isModalOpen: boolean;
-  handleOk: () => void;
-  handleCancel: () => void;
-  selectAllEmployee: () => void;
-}
 const CustomModal: React.FC<CustomModalProps> = ({
   isModalOpen,
   handleOk,

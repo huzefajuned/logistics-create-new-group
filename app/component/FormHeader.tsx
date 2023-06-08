@@ -1,8 +1,5 @@
 import React from "react";
-interface FormHeaderProps {
-  heading: string;
-  subheading: string;
-}
+import { FormHeaderProps } from "../interface/type";
 const FormHeader: React.FC<FormHeaderProps> = ({ heading, subheading }) => {
   return (
     <div>
